@@ -42,17 +42,18 @@ public class OrderRepositoryImpl implements OrderRepository {
         }
         return order;
     }
+
     private long saveOrderDetails(Order order) {
         @SuppressWarnings("unchecked")
         Map<String, Object> values =
                 objectMapper.convertValue(order, Map.class);
         values.put("placedAt", order.getPlacedAt());
-        long orderId =
-                orderInserter
-                        .executeAndReturnKey(values)
-                        .longValue();
+        long orderId = orderInserter
+                .executeAndReturnKey(values)
+                .longValue();
         return orderId;
     }
+
     private void saveTacoToOrder(Taco taco, long orderId) {
         Map<String, Object> values = new HashMap<>();
         values.put("tacoOrder", orderId);
