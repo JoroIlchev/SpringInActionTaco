@@ -61,7 +61,7 @@ public class DesignTacoController {
     @PostMapping
     public String processDesign(@Valid Taco taco, Errors errors, Model model, @ModelAttribute Order order) {
         if (errors.hasErrors()){
-            return getView(model);
+            return "design";
         }
         log.info("{Process designing " + taco);
 
@@ -70,16 +70,16 @@ public class DesignTacoController {
         return "redirect:/orders/current";
     }
 
-    private String getView(Model model) {
-        List<Ingredient> ingredients = getIngredients();
-        Type[] types = Type.values();
-        for (Type type : types) {
-            model.addAttribute(type.toString().toLowerCase(),
-                    filterByType(ingredients, type));
-        }
-        model.addAttribute("design", new Taco());
-        return "design";
-    }
+//    private String getView(Model model) {
+//        List<Ingredient> ingredients = getIngredients();
+//        Type[] types = Type.values();
+//        for (Type type : types) {
+//            model.addAttribute(type.toString().toLowerCase(),
+//                    filterByType(ingredients, type));
+//        }
+//        model.addAttribute("design", new Taco());
+//        return "design";
+//    }
 
     private List<Ingredient> filterByType(List<Ingredient> ingredients, Type type) {
         return ingredients.stream()
@@ -88,19 +88,19 @@ public class DesignTacoController {
     }
 
 
-    private List<Ingredient> getIngredients() {
-        return Arrays.asList(
-                new Ingredient("FLTO", "Flour Tortilla", Type.WRAP),
-                new Ingredient("COTO", "Corn Tortilla", Type.WRAP),
-                new Ingredient("GRBF", "Ground Beef", Type.PROTEIN),
-                new Ingredient("CARN", "Carnitas", Type.PROTEIN),
-                new Ingredient("TMTO", "Diced Tomatoes", Type.VEGGIES),
-                new Ingredient("LETC", "Lettuce", Type.VEGGIES),
-                new Ingredient("CHED", "Cheddar", Type.CHEESE),
-                new Ingredient("JACK", "Monterrey Jack", Type.CHEESE),
-                new Ingredient("SLSA", "Salsa", Type.SAUCE),
-                new Ingredient("SRCR", "Sour Cream", Type.SAUCE)
-        );
-    }
+//    private List<Ingredient> getIngredients() {
+//        return Arrays.asList(
+//                new Ingredient("FLTO", "Flour Tortilla", Type.WRAP),
+//                new Ingredient("COTO", "Corn Tortilla", Type.WRAP),
+//                new Ingredient("GRBF", "Ground Beef", Type.PROTEIN),
+//                new Ingredient("CARN", "Carnitas", Type.PROTEIN),
+//                new Ingredient("TMTO", "Diced Tomatoes", Type.VEGGIES),
+//                new Ingredient("LETC", "Lettuce", Type.VEGGIES),
+//                new Ingredient("CHED", "Cheddar", Type.CHEESE),
+//                new Ingredient("JACK", "Monterrey Jack", Type.CHEESE),
+//                new Ingredient("SLSA", "Salsa", Type.SAUCE),
+//                new Ingredient("SRCR", "Sour Cream", Type.SAUCE)
+//        );
+//    }
 
 }
