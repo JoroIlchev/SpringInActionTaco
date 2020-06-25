@@ -10,9 +10,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import tacos.Order;
+import tacos.User;
 import tacos.data.OrderRepository;
+import tacos.data.UserRepository;
 
 import javax.validation.Valid;
+import java.security.Principal;
 
 @Slf4j
 @Controller
@@ -21,9 +24,11 @@ import javax.validation.Valid;
 public class OrderController {
 
     private OrderRepository orderRepo;
+    private UserRepository userRepository;
 
-    public OrderController(OrderRepository orderRepo) {
+    public OrderController(OrderRepository orderRepo, UserRepository userRepository) {
         this.orderRepo = orderRepo;
+        this.userRepository = userRepository;
     }
 
     @GetMapping("/current")
@@ -34,11 +39,16 @@ public class OrderController {
     }
 
     @PostMapping
-    public String processOrder(@Valid Order order, Errors errors, SessionStatus sessionStatus) {
+    public String processOrder(@Valid Order order, Errors errors, SessionStatus sessionStatus, Principal principal) {
         if (errors.hasErrors()) {
             return "orderForm";
         }
+        User user = userRepository.findByUsername(principal.getName());
+
+        order.setUser(user);
+
         orderRepo.save(order);
+
         sessionStatus.setComplete();
 
         return "redirect:/";
